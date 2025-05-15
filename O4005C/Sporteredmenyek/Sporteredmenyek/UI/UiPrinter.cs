@@ -4,6 +4,7 @@ using Sporteredmenyek.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -12,8 +13,8 @@ namespace Sporteredmenyek.UI
 {
     class UiPrinter
     {
-        UserService userService = new UserService("Data/users.json");
-        MatchService matchService = new MatchService("Data/");
+        readonly UserService userService = new UserService("Data/users.json");
+        readonly MatchService matchService = new MatchService("Data/");
         public void ClearConsole() 
         {
             Console.Clear();
@@ -68,7 +69,7 @@ namespace Sporteredmenyek.UI
             }
         }
 
-        public int MainMenu() 
+        /*public int MainMenu() 
         {
             Console.WriteLine("Mit szeretne tenni? \n 1 - Bejelentkezés \n 2 - Regisztráció");
             try
@@ -83,7 +84,7 @@ namespace Sporteredmenyek.UI
                 return -1;
             }
 
-        }
+        }*/
 
         public void Error(string message) {AnsiConsole.MarkupLine("[bold red]HIBA:[/] " + message);Console.ReadKey(); }
 
@@ -98,12 +99,22 @@ namespace Sporteredmenyek.UI
             Console.Write("Adja meg az email címét: ");
             string email = Console.ReadLine();
             if (email == "x") { return -1; }
+            
             Console.Write("Adjon meg egy jelszót: ");
             string password = Console.ReadLine();
             if (password == "x") { return -1; }
             //Foglalt e az emailcím
             if (userService.EmailExists(email.Trim())){
                 Error("Ez az emailcím már foglalt!");
+                return 0;
+            }
+            try
+            {
+                var addr = new MailAddress(email.Trim());
+            }
+            catch (Exception ex)
+            {
+                Error("Hibás email formátum!");
                 return 0;
             }
 

@@ -20,19 +20,19 @@ namespace Sporteredmenyek.Services
             this._path = path;
             LoadUsers();
         }
-        public void AddUser(User user) {
+        public async Task AddUser(User user) {
             _users.Add(user);
-            SaveUsers();
+            await SaveUsers();
         }
 
 
-        public void SaveUsers()
+        public async Task SaveUsers()
         {
             try
             {
                 var dtos = _users.Select(user => user.ToDto()).ToList();
                 var json = JsonSerializer.Serialize(dtos, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(_path, json);
+                await File.WriteAllTextAsync(_path, json);
             }
             catch (Exception ex) 
             {
