@@ -1,0 +1,4 @@
+Ahogy órán is jeleztem, először figyelmetlenségből saját git repoban kezdtem el a projektet, és ott található a folyamatos commitolás!
+
+Ennek a linkje:
+https://github.com/HoningerZoltan/Sporteredmenyek-C-_alapok.git
