@@ -35,13 +35,12 @@ namespace Sporteredmenyek.Mappers
             TeamsIntValuePair result = new TeamsIntValuePair();
             result.Home = dto.ResultHome;
             result.Away = dto.ResultAway;
-            List<TeamsIntValuePair> periodResults = new List<TeamsIntValuePair>();
             TeamsIntValuePair penaltyMinutes = new TeamsIntValuePair();
-            result.Home = dto.PenaltyMinutesHome;
-            result.Away = dto.PenaltyMinutesAway;
+            penaltyMinutes.Home = dto.PenaltyMinutesHome;
+            penaltyMinutes.Away = dto.PenaltyMinutesAway;
             TeamsIntValuePair shotsOnGoal = new TeamsIntValuePair();
-            result.Home = dto.ShotsOnGoalHome;
-            result.Away = dto.ShotsOnGoalAway;
+            shotsOnGoal.Home = dto.ShotsOnGoalHome;
+            shotsOnGoal.Away = dto.ShotsOnGoalAway;
 
 
             return new HockeyMatch

@@ -35,13 +35,12 @@ namespace Sporteredmenyek.Mappers
             TeamsIntValuePair result = new TeamsIntValuePair();
             result.Home = dto.ResultHome;
             result.Away = dto.ResultAway;
-            List<TeamsIntValuePair> periodResults = new List<TeamsIntValuePair>();
             TeamsIntValuePair fouls = new TeamsIntValuePair();
-            result.Home = dto.FoulsHome;
-            result.Away = dto.FoulsAway;
+            fouls.Home = dto.FoulsHome;
+            fouls.Away = dto.FoulsAway;
             TeamsIntValuePair threePoint = new TeamsIntValuePair();
-            result.Home = dto.ThreePointMadeHome;
-            result.Away = dto.ThreePointMadeAway;
+            threePoint.Home = dto.ThreePointMadeHome;
+            threePoint.Away = dto.ThreePointMadeAway;
 
 
             return new BasketballMatch

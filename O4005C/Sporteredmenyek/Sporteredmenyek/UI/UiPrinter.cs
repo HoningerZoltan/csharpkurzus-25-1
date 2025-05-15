@@ -13,6 +13,7 @@ namespace Sporteredmenyek.UI
     class UiPrinter
     {
         UserService userService = new UserService("Data/users.json");
+        MatchService matchService = new MatchService("Data/");
         public void ClearConsole() 
         {
             Console.Clear();
@@ -32,13 +33,8 @@ namespace Sporteredmenyek.UI
                     break;
                 else if (input == "1")
                 {
-                    int result = SignIn();
-                    if (result == 1) { SignedInMenu(new User("test", "admin@admin.hu", "alma")); }
-                    else if (result == -1)
-                    {
-                        AnsiConsole.MarkupLine("[bold yellow]Bejelentkezés megszakítva[/]");
-                        Console.ReadKey();
-                    }
+                    User result = SignIn();
+                    if (result is not null) { SignedInMenu(result); }
                     else
                     {
                         AnsiConsole.MarkupLine("[bold red]Hiba a bejelentkezés során[/]");
@@ -105,6 +101,12 @@ namespace Sporteredmenyek.UI
             Console.Write("Adjon meg egy jelszót: ");
             string password = Console.ReadLine();
             if (password == "x") { return -1; }
+            //Foglalt e az emailcím
+            if (userService.EmailExists(email.Trim())){
+                Error("Ez az emailcím már foglalt!");
+                return 0;
+            }
+
             User newUser = new User(name,email,password);
             try
             {
@@ -116,28 +118,27 @@ namespace Sporteredmenyek.UI
             
         }
 
-        public int SignIn()
+        public User SignIn()
         {
             ClearConsole();
-            int returnValue = 0;
+            User returnValue=null;
             AnsiConsole.MarkupLine("[bold underline]Bejelentkezés[/]");
             Console.WriteLine("(Kilépéshez irja be az x karaktert)\n");
             Console.Write("Email-cím: ");
             string email = Console.ReadLine();
-            if (email == "x") { return -1; }
+            if (email == "x") { return null; }
             Console.Write("Jelszó: ");
             string password = Console.ReadLine();
-            if (password == "x") { return -1; }
+            if (password == "x") { return null; }
             var users = userService.getUsers();
             foreach (var user in users)
             {
                 if (user.Email == email && user.Password == password)
                 {
-                    returnValue= 1;
-                    break;
+                    return user;
                 }
             }
-            return returnValue;
+            return null;
         }
 
         public void SignedInMenu(User user)
@@ -154,7 +155,7 @@ namespace Sporteredmenyek.UI
                     Console.WriteLine("2 - Jégkorong");
                     Console.WriteLine("3 - Kosárlabda");
                     Console.WriteLine("x - Kijelentkezés");
-                    MatchService matchService = new MatchService("Data/");
+                    
 
                     string choice = Console.ReadLine();
                     switch (choice)
@@ -308,20 +309,48 @@ namespace Sporteredmenyek.UI
                     Console.WriteLine("x - Kijelentkezés");
 
                     string choice = Console.ReadLine();
+                    
 
                     switch (choice)
                     {
+
                         case "1":
-                            //ShowAllMatches();
+                            var orderedMatches = matchService.GetAllMatches()
+                                .OrderByDescending(m => m.StartTime)
+                                .ToList();
+                            foreach (var match in orderedMatches)
+                                match.Print();       
+                            Console.ReadKey();
                             break;
                         case "2":
-                            //ShowHockeyMatches();
+                            var hockeyMatches = matchService.GetAllMatches()
+                                .Where(m => m is HockeyMatch)
+                                .Cast<HockeyMatch>()
+                                .OrderByDescending(m => m.StartTime)
+                                .ToList();
+                            foreach (var match in hockeyMatches)
+                                match.Print();
+                            Console.ReadKey();
                             break;
                         case "3":
-                            //ShowBasketballMatches();
+                            var basketballMatches = matchService.GetAllMatches()
+                                .Where(m => m is BasketballMatch)
+                                .Cast<BasketballMatch>()
+                                .OrderByDescending(m => m.StartTime)
+                                .ToList();
+                            foreach (var match in basketballMatches)
+                                match.Print();
+                            Console.ReadKey();
                             break;
                         case "4":
-                            //ShowFootballMatches();
+                            var footballMatches = matchService.GetAllMatches()
+                                .Where(m => m is FootballMatch)
+                                .Cast<FootballMatch>()
+                                .OrderByDescending(m => m.StartTime)
+                                .ToList();
+                            foreach (var match in footballMatches)
+                                match.Print();
+                            Console.ReadKey();
                             break;
                         case "x":
                             stayInMenu = false;

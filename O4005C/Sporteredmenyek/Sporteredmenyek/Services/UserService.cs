@@ -60,5 +60,15 @@ namespace Sporteredmenyek.Services
         }
 
         public List<User> getUsers() { return _users; }
+
+        public bool EmailExists(string email)
+        {
+            var matchingEmails = _users
+                .Where(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase))
+                .Select(u => u.Email)
+                .ToList();
+
+            return matchingEmails.Any();
+        }
     }
 }

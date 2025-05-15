@@ -33,8 +33,8 @@ namespace Sporteredmenyek.Core.Models
             var kozos = new Table();
             kozos.Width(80);
             kozos.Border(TableBorder.None);
-            kozos.AddColumn(new TableColumn(new Markup("[bold]----------------------------- Jégkorong -----------------------------[/]")).Centered()).Centered();
-
+            kozos.AddColumn(new TableColumn(new Markup("[blue bold]----------------------------- Jégkorong -----------------------------[/]")).Centered()).Centered();
+            kozos.AddRow(new Markup($"[white]Dátum: {StartTime:yyyy.MM.dd.}[/]").Centered());
             kozos.AddRow(new Markup($"[white]Időpont: {StartTime.ToShortTimeString()}[/]").Centered());
             kozos.AddRow(new Markup($"[white]Helyszín: {Location}[/]").Centered());
 
